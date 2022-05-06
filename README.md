@@ -1,12 +1,9 @@
-# Template project
+# Battleship
 
-## Features:
+_Battleship game for The Odin Project_
 
-- airbnb
-- eslint
-- prettier
-- webpack
-- tailwindcss
+- Assignment: [Odin lesson](https://www.theodinproject.com/lessons/node-path-javascript-battleship)
+- Live preview: [https://greqov.github.io/odin-battleship/](https://greqov.github.io/odin-battleship/)
 
 ## Development
 
