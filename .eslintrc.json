@@ -3,6 +3,7 @@
   "env": {
     "browser": true,
     "es6": true,
+    "jest": true,
     "worker": true
   },
   "extends": ["airbnb-base", "prettier"],
