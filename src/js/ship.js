@@ -8,6 +8,10 @@ function shipFactory(size) {
       }
     },
 
+    isSunk() {
+      return body.indexOf(0) === -1;
+    },
+
     get body() {
       return body;
     },

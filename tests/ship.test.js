@@ -24,3 +24,12 @@ test('hits outside of ship dont affect it', () => {
   ship.hit(-1);
   expect(ship.body).toEqual([0, 0]);
 });
+
+test('ship can sunk', () => {
+  const ship1 = shipFactory(1);
+  ship1.hit(0);
+  expect(ship1.isSunk()).toBe(true);
+  const ship2 = shipFactory(2);
+  ship2.hit(1);
+  expect(ship2.isSunk()).toBe(false);
+});
