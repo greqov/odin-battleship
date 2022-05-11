@@ -14,7 +14,7 @@ test('ship can register hits', () => {
   const ship = shipFactory(3);
   ship.hit(1);
   ship.hit(2);
-  expect(ship.body).toEqual([0, 1, 1]);
+  expect(ship.body).toEqual([1, 0, 0]);
 });
 
 test('hits outside of ship dont affect it', () => {
@@ -22,7 +22,7 @@ test('hits outside of ship dont affect it', () => {
   ship.hit(4);
   // NOTE: does it make sense to test negative index?
   ship.hit(-1);
-  expect(ship.body).toEqual([0, 0]);
+  expect(ship.body).toEqual([1, 1]);
 });
 
 test('ship can sunk', () => {

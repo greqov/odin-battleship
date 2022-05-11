@@ -1,15 +1,15 @@
 function shipFactory(size) {
-  const body = new Array(size).fill(0);
+  const body = new Array(size).fill(1);
 
   const ship = {
     hit(n) {
       if (n >= 0 && n < body.length) {
-        body[n] = 1;
+        body[n] = 0;
       }
     },
 
     isSunk() {
-      return body.indexOf(0) === -1;
+      return body.indexOf(1) === -1;
     },
 
     get body() {
