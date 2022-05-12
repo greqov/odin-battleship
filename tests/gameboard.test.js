@@ -5,8 +5,6 @@ test('happy test', () => {
   expect(typeof gameboardFactory).toBe('function');
 });
 
-// Gameboards should be able to place ships at specific coordinates by calling the ship factory function.
-
 test('create square gameboard', () => {
   const gameboard = gameboardFactory();
   expect(gameboard.board.length).toBe(9);
@@ -21,10 +19,9 @@ test('can get cell by label', () => {
 
 test('can place ship horizontally on gameboard', () => {
   const gameboard = gameboardFactory();
-  const { getCell } = gameboard;
+  const { placeShip, getCell } = gameboard;
   const ship = shipFactory(2);
-  const place = 'b1';
-  gameboard.placeShip(ship, place);
+  placeShip(ship, 'b1');
 
   expect(getCell('a1').value).toEqual(0);
   expect(getCell('b1').value).toEqual(1);
@@ -33,10 +30,9 @@ test('can place ship horizontally on gameboard', () => {
 
 test('can place ship vertically on gameboard', () => {
   const gameboard = gameboardFactory();
-  const { getCell } = gameboard;
+  const { placeShip, getCell } = gameboard;
   const ship = shipFactory(2);
-  const place = 'b2';
-  gameboard.placeShip(ship, place, 'vertical');
+  placeShip(ship, 'b2', 'vertical');
 
   expect(getCell('b1').value).toBe(0);
   expect(getCell('b2').value).toBe(1);
