@@ -14,14 +14,15 @@ function gameboardFactory() {
     });
   });
 
-  const placeShip = function (ship, place) {
+  const placeShip = function (ship, place, mode) {
     const { length } = ship;
     const start = board.find((item) => item.label === place);
-    console.log(`start`, start);
+    const { st, dyn } = mode === 'vertical' ? { st: 'x', dyn: 'y' } : { st: 'y', dyn: 'x' };
 
     for (let i = 0; i < length; i++) {
-      // TODO: add 'vertical' mode (tip: check for cell.y)
-      const targetCell = board.find((cell) => cell.x === start.x + i);
+      const targetCell = board.find(
+        (cell) => cell[dyn] === start[dyn] + i && cell[st] === start[st]
+      );
       targetCell.value = 1;
     }
   };
