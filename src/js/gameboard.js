@@ -14,9 +14,11 @@ function gameboardFactory() {
     });
   });
 
+  const getCell = (label) => board.find((cell) => cell.label === label);
+
   const placeShip = function (ship, place, mode) {
     const { length } = ship;
-    const start = board.find((item) => item.label === place);
+    const start = getCell(place);
     const { st, dyn } = mode === 'vertical' ? { st: 'x', dyn: 'y' } : { st: 'y', dyn: 'x' };
 
     for (let i = 0; i < length; i++) {
@@ -30,6 +32,7 @@ function gameboardFactory() {
   return {
     board,
     placeShip,
+    getCell,
   };
 }
 
