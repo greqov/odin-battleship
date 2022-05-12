@@ -42,3 +42,19 @@ test('can place ship vertically on gameboard', () => {
   expect(getCell('b2').value).toBe(1);
   expect(getCell('b3').value).toBe(1);
 });
+
+test('ships are placed within a gameboard', () => {
+  const gameboard = gameboardFactory();
+  const { placeShip } = gameboard;
+  const ship = shipFactory(3);
+
+  // horizontal case
+  expect(() => {
+    placeShip(ship, 'b1');
+  }).toThrow(/no enough space/);
+
+  // vertical case
+  expect(() => {
+    placeShip(ship, 'a2', 'vertical');
+  }).toThrow(/no enough space/);
+});
