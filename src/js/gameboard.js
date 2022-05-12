@@ -23,7 +23,8 @@ function gameboardFactory() {
     const { length } = ship;
     const start = getCell(place);
     const { st, dyn } = mode === 'vertical' ? { st: 'x', dyn: 'y' } : { st: 'y', dyn: 'x' };
-    const water = [];
+    let water = [];
+    const shipArea = [];
 
     if (length > boardSize - start[dyn]) {
       throw new Error('ERROR: there is no enough space to place a ship!');
@@ -32,9 +33,9 @@ function gameboardFactory() {
     for (let i = 0; i < length; i++) {
       const shipCell = board.find((cell) => cell[dyn] === start[dyn] + i && cell[st] === start[st]);
 
-      shipCell.value = 1;
+      shipArea.push(shipCell);
 
-      // mark space around with 0.5
+      // collect water cells
       if (mode === 'vertical') {
         const x = shipCell[st];
         const y = shipCell[dyn];
@@ -67,7 +68,7 @@ function gameboardFactory() {
         water.push(getCellByXY(cell.x - 1, cell.y));
       });
     } else {
-      // horizontal only
+      // horizontal
       const startWater = {
         x: start.x - 1,
         y: start.y,
@@ -85,12 +86,20 @@ function gameboardFactory() {
       });
     }
 
-    water
-      .filter((cell) => cell !== undefined)
-      .forEach((cell) => {
-        const c = cell;
-        c.value = 0.5;
-      });
+    water = water.filter((cell) => cell !== undefined);
+    const shipParts = water.filter((cell) => cell.value === 1).length;
+    if (shipParts) throw new Error('ERROR: ships cannot be placed next to each other');
+
+    // place ship/water in case of no errors
+    shipArea.forEach((cell) => {
+      const c = cell;
+      c.value = 1;
+    });
+
+    water.forEach((cell) => {
+      const c = cell;
+      c.value = 0.5;
+    });
   };
 
   return {

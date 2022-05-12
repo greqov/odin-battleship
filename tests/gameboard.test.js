@@ -95,3 +95,15 @@ test('ship takes some space near itself (vertical case)', () => {
   expect(getCell('c2').value).toBe(1);
   expect(getCell('c3').value).toBe(0.5);
 });
+
+test('ships cannot be placed next to each other', () => {
+  const { placeShip } = gameboardFactory();
+  const ship1 = shipFactory(2);
+  const ship2 = shipFactory(1);
+
+  placeShip(ship1, 'a1');
+
+  expect(() => {
+    placeShip(ship2, 'c2');
+  }).toThrow(/ships cannot be placed next to each other/);
+});
