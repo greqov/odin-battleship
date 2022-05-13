@@ -102,11 +102,26 @@ function gameboardFactory() {
     });
   };
 
+  const receiveAttack = (x, y) => {
+    const target = getCellByXY(x, y);
+
+    if (target.value === 'M' || target.value === 'H')
+      throw new Error('ERROR: useless shot! try another one.');
+
+    if (target.value === 1) {
+      // it is a ship
+      target.value = 'H';
+    } else {
+      target.value = 'M';
+    }
+  };
+
   return {
     board,
     placeShip,
     getCell,
     getCellByXY,
+    receiveAttack,
   };
 }
 
