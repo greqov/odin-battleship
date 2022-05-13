@@ -20,11 +20,57 @@ function gameboardFactory() {
 
   const getCellByXY = (x, y) => board.find((cell) => cell.x === x && cell.y === y);
 
+  const getAroundWater = (ship, place, mode) => {
+    let water = [];
+    const { length } = ship;
+    const start = getCell(place);
+
+    const offset =
+      mode === 'vertical'
+        ? {
+            x: length - 1,
+            y: 2,
+          }
+        : {
+            x: 2,
+            y: length - 1,
+          };
+
+    const topLeftWater = {
+      x: start.x - 1,
+      y: start.y - 1,
+    };
+
+    const bottomRightWater = {
+      x: start.x + offset.x,
+      y: start.y + offset.y,
+    };
+
+    for (let i = topLeftWater.x; i <= bottomRightWater.x; i++) {
+      for (let j = topLeftWater.y; j <= bottomRightWater.y; j++) {
+        water.push(getCellByXY(i, j));
+      }
+    }
+
+    water = water.filter((cell) => cell !== undefined);
+
+    const shipCells = [];
+
+    for (let i = start.x; i < start.x + offset.x; i++) {
+      for (let j = start.y; j < start.y + offset.y; j++) {
+        shipCells.push(getCellByXY(i, j));
+      }
+    }
+
+    water = water.filter((cell) => !shipCells.includes(cell));
+
+    return water;
+  };
+
   const placeShip = function (ship, place, mode) {
     const { length } = ship;
     const start = getCell(place);
     const { st, dyn } = mode === 'vertical' ? { st: 'x', dyn: 'y' } : { st: 'y', dyn: 'x' };
-    let water = [];
     const shipArea = [];
 
     if (length > boardSize - start[dyn]) {
@@ -35,65 +81,14 @@ function gameboardFactory() {
       const shipCell = board.find((cell) => cell[dyn] === start[dyn] + i && cell[st] === start[st]);
 
       shipArea.push(shipCell);
-
-      // collect water cells
-      if (mode === 'vertical') {
-        const x = shipCell[st];
-        const y = shipCell[dyn];
-
-        water.push(getCellByXY(x + 1, y));
-        water.push(getCellByXY(x - 1, y));
-      } else {
-        const x = shipCell[dyn];
-        const y = shipCell[st];
-
-        water.push(getCellByXY(x, y + 1));
-        water.push(getCellByXY(x, y - 1));
-      }
     }
 
-    if (mode === 'vertical') {
-      const startWater = {
-        x: start.x,
-        y: start.y - 1,
-      };
-
-      const endWater = {
-        x: start.x,
-        y: start.y + length,
-      };
-
-      [startWater, endWater].forEach((cell) => {
-        water.push(getCellByXY(cell.x, cell.y));
-        water.push(getCellByXY(cell.x + 1, cell.y));
-        water.push(getCellByXY(cell.x - 1, cell.y));
-      });
-    } else {
-      // horizontal
-      const startWater = {
-        x: start.x - 1,
-        y: start.y,
-      };
-
-      const endWater = {
-        x: start.x + length,
-        y: start.y,
-      };
-
-      [startWater, endWater].forEach((cell) => {
-        water.push(getCellByXY(cell.x, cell.y));
-        water.push(getCellByXY(cell.x, cell.y + 1));
-        water.push(getCellByXY(cell.x, cell.y - 1));
-      });
-    }
-
-    water = water.filter((cell) => cell !== undefined);
+    const water = getAroundWater(ship, place, mode);
     const shipParts = water.filter((cell) => cell.value.label === 'S').length;
     if (shipParts) throw new Error('ERROR: ships cannot be placed next to each other');
 
     // place ship/water in case of no errors
     const shipIndex = fleet.length;
-    // TODO: add start cell, mode data too?
     fleet.push({
       id: shipIndex, // not sure
       ship,
