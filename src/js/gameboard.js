@@ -3,6 +3,7 @@ function gameboardFactory() {
   const digits = [1, 2, 3];
   const board = [];
   const boardSize = letters.length;
+  const fleet = [];
 
   digits.forEach((digit, digitIndex) => {
     letters.forEach((letter, letterIndex) => {
@@ -87,13 +88,26 @@ function gameboardFactory() {
     }
 
     water = water.filter((cell) => cell !== undefined);
-    const shipParts = water.filter((cell) => cell.value === 1).length;
+    const shipParts = water.filter((cell) => cell.value.label === 'S').length;
     if (shipParts) throw new Error('ERROR: ships cannot be placed next to each other');
 
     // place ship/water in case of no errors
-    shipArea.forEach((cell) => {
+    const shipIndex = fleet.length;
+    // TODO: add start cell, mode data too?
+    fleet.push({
+      id: shipIndex, // not sure
+      ship,
+      start,
+      mode: mode || 'horizontal',
+    });
+
+    shipArea.forEach((cell, idx) => {
       const c = cell;
-      c.value = 1;
+      c.value = {
+        id: shipIndex,
+        label: 'S',
+        part: idx,
+      };
     });
 
     water.forEach((cell) => {
@@ -105,14 +119,26 @@ function gameboardFactory() {
   const receiveAttack = (x, y) => {
     const target = getCellByXY(x, y);
 
-    if (target.value === 'M' || target.value === 'H')
+    if (target.value === 'M' || target.value.label === 'H')
       throw new Error('ERROR: useless shot! try another one.');
 
-    if (target.value === 1) {
-      // it is a ship
-      target.value = 'H';
+    // check for ship hit
+    if (target.value.label === 'S') {
+      target.value.label = 'H';
+
+      const { ship } = fleet[target.value.id];
+      ship.hit(target.value.part);
+
+      if (ship.isSunk()) {
+        // do one action
+        // mark around water with 'M' maybe
+      } else {
+        // or another
+        // wait for another attack
+      }
     } else {
       target.value = 'M';
+      // change turn
     }
   };
 

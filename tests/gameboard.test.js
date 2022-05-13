@@ -32,8 +32,8 @@ test('can place ship horizontally on gameboard', () => {
   const ship = shipFactory(2);
   placeShip(ship, 'b1');
 
-  expect(getCell('b1').value).toEqual(1);
-  expect(getCell('c1').value).toEqual(1);
+  expect(getCell('b1').value.label).toEqual('S');
+  expect(getCell('c1').value.label).toEqual('S');
 });
 
 test('can place ship vertically on gameboard', () => {
@@ -42,8 +42,8 @@ test('can place ship vertically on gameboard', () => {
   const ship = shipFactory(2);
   placeShip(ship, 'b2', 'vertical');
 
-  expect(getCell('b2').value).toBe(1);
-  expect(getCell('b3').value).toBe(1);
+  expect(getCell('b2').value.label).toBe('S');
+  expect(getCell('b3').value.label).toBe('S');
 });
 
 test('ships are placed within a gameboard', () => {
@@ -68,10 +68,10 @@ test('ship takes some space near itself (horizontal case)', () => {
 
   placeShip(ship, 'a1');
 
-  expect(getCell('a1').value).toBe(1);
+  expect(getCell('a1').value.label).toBe('S');
   expect(getCell('a2').value).toBe(0.5);
   expect(getCell('a3').value).toBe(0);
-  expect(getCell('b1').value).toBe(1);
+  expect(getCell('b1').value.label).toBe('S');
   expect(getCell('b2').value).toBe(0.5);
   expect(getCell('b3').value).toBe(0);
   expect(getCell('c1').value).toBe(0.5);
@@ -91,8 +91,8 @@ test('ship takes some space near itself (vertical case)', () => {
   expect(getCell('b1').value).toBe(0.5);
   expect(getCell('b2').value).toBe(0.5);
   expect(getCell('b3').value).toBe(0.5);
-  expect(getCell('c1').value).toBe(1);
-  expect(getCell('c2').value).toBe(1);
+  expect(getCell('c1').value.label).toBe('S');
+  expect(getCell('c2').value.label).toBe('S');
   expect(getCell('c3').value).toBe(0.5);
 });
 
@@ -129,8 +129,8 @@ test('lucky shots marked as H', () => {
   receiveAttack(0, 1);
   receiveAttack(1, 1);
 
-  expect(getCell('a2').value).toBe('H');
-  expect(getCell('b2').value).toBe('H');
+  expect(getCell('a2').value.label).toBe('H');
+  expect(getCell('b2').value.label).toBe('H');
 });
 
 test('gameboard prevents useless shots', () => {
