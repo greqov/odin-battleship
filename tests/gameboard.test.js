@@ -138,8 +138,6 @@ test('gameboard prevents useless shots', () => {
   expect(() => receiveAttack(0, 0)).toThrow(/useless shot/);
 });
 
-// Gameboards should be able to report whether or not all of their ships have been sunk.
-
 test('mark water around sunk ship with M', () => {
   const { receiveAttack, placeShip, getCell } = gameboardFactory();
   const ship = shipFactory(1);
@@ -153,4 +151,18 @@ test('mark water around sunk ship with M', () => {
   expect(getCell('b1').value).toBe('M');
   expect(getCell('b2').value).toBe('M');
   expect(getCell('b3').value).toBe('M');
+});
+
+test('detect whether all ships are sunk', () => {
+  const { receiveAttack, placeShip, isFleetDestroyed } = gameboardFactory();
+  const ship1 = shipFactory(1);
+  const ship2 = shipFactory(1);
+  placeShip(ship1, 'a1');
+  placeShip(ship2, 'c3');
+
+  receiveAttack(0, 0);
+  expect(isFleetDestroyed()).toBe(false);
+
+  receiveAttack(2, 2);
+  expect(isFleetDestroyed()).toBe(true);
 });

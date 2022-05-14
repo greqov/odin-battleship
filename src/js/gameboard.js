@@ -153,12 +153,18 @@ function gameboardFactory() {
     }
   };
 
+  const isFleetDestroyed = () => {
+    const sunkShips = fleet.filter((i) => i.ship.isSunk()).length;
+    return fleet.length === sunkShips;
+  };
+
   return {
     board,
     placeShip,
     getCell,
     getCellByXY,
     receiveAttack,
+    isFleetDestroyed,
   };
 }
 
