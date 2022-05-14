@@ -20,6 +20,30 @@ function gameboardFactory() {
 
   const getCellByXY = (x, y) => board.find((cell) => cell.x === x && cell.y === y);
 
+  const getShipArea = (ship, start, mode) => {
+    const { length } = ship;
+    const shipArea = [];
+
+    const shipSize =
+      mode === 'vertical'
+        ? {
+            x: 0,
+            y: length - 1,
+          }
+        : {
+            x: length - 1,
+            y: 0,
+          };
+
+    for (let i = start.x; i <= start.x + shipSize.x; i++) {
+      for (let j = start.y; j <= start.y + shipSize.y; j++) {
+        shipArea.push(getCellByXY(i, j));
+      }
+    }
+
+    return shipArea;
+  };
+
   const getAroundWater = (ship, place, mode) => {
     let water = [];
     const { length } = ship;
@@ -54,24 +78,9 @@ function gameboardFactory() {
 
     water = water.filter((cell) => cell !== undefined);
 
-    const shipCells = [];
-    const sc = {};
+    const shipArea = getShipArea(ship, start, mode);
 
-    if (mode === 'vertical') {
-      sc.x = 0;
-      sc.y = length - 1;
-    } else {
-      sc.x = length - 1;
-      sc.y = 0;
-    }
-
-    for (let i = start.x; i <= start.x + sc.x; i++) {
-      for (let j = start.y; j <= start.y + sc.y; j++) {
-        shipCells.push(getCellByXY(i, j));
-      }
-    }
-
-    water = water.filter((cell) => !shipCells.includes(cell));
+    water = water.filter((cell) => !shipArea.includes(cell));
 
     return water;
   };
@@ -86,17 +95,10 @@ function gameboardFactory() {
   const placeShip = function (ship, place, mode) {
     const { length } = ship;
     const start = getCell(place);
-    const { st, dyn } = mode === 'vertical' ? { st: 'x', dyn: 'y' } : { st: 'y', dyn: 'x' };
-    const shipArea = [];
+    const axis = mode === 'vertical' ? 'y' : 'x';
 
-    if (length > boardSize - start[dyn]) {
+    if (length > boardSize - start[axis]) {
       throw new Error('ERROR: there is no enough space to place a ship!');
-    }
-
-    for (let i = 0; i < length; i++) {
-      const shipCell = board.find((cell) => cell[dyn] === start[dyn] + i && cell[st] === start[st]);
-
-      shipArea.push(shipCell);
     }
 
     const water = getAroundWater(ship, place, mode);
@@ -112,6 +114,7 @@ function gameboardFactory() {
       mode: mode || 'horizontal',
     });
 
+    const shipArea = getShipArea(ship, start, mode);
     shipArea.forEach((cell, idx) => {
       const c = cell;
       c.value = {
