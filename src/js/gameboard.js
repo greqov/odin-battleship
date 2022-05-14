@@ -28,12 +28,12 @@ function gameboardFactory() {
     const offset =
       mode === 'vertical'
         ? {
-            x: length - 1,
-            y: 2,
+            x: 2,
+            y: length + 1,
           }
         : {
-            x: 2,
-            y: length - 1,
+            x: length + 1,
+            y: 2,
           };
 
     const topLeftWater = {
@@ -42,8 +42,8 @@ function gameboardFactory() {
     };
 
     const bottomRightWater = {
-      x: start.x + offset.x,
-      y: start.y + offset.y,
+      x: topLeftWater.x + offset.x,
+      y: topLeftWater.y + offset.y,
     };
 
     for (let i = topLeftWater.x; i <= bottomRightWater.x; i++) {
@@ -55,9 +55,18 @@ function gameboardFactory() {
     water = water.filter((cell) => cell !== undefined);
 
     const shipCells = [];
+    const sc = {};
 
-    for (let i = start.x; i < start.x + offset.x; i++) {
-      for (let j = start.y; j < start.y + offset.y; j++) {
+    if (mode === 'vertical') {
+      sc.x = 0;
+      sc.y = length - 1;
+    } else {
+      sc.x = length - 1;
+      sc.y = 0;
+    }
+
+    for (let i = start.x; i <= start.x + sc.x; i++) {
+      for (let j = start.y; j <= start.y + sc.y; j++) {
         shipCells.push(getCellByXY(i, j));
       }
     }
@@ -65,6 +74,13 @@ function gameboardFactory() {
     water = water.filter((cell) => !shipCells.includes(cell));
 
     return water;
+  };
+
+  const markCells = (array, mark) => {
+    array.forEach((cell) => {
+      const c = cell;
+      c.value = mark;
+    });
   };
 
   const placeShip = function (ship, place, mode) {
@@ -105,10 +121,7 @@ function gameboardFactory() {
       };
     });
 
-    water.forEach((cell) => {
-      const c = cell;
-      c.value = 0.5;
-    });
+    markCells(water, 'w');
   };
 
   const receiveAttack = (x, y) => {
@@ -121,14 +134,14 @@ function gameboardFactory() {
     if (target.value.label === 'S') {
       target.value.label = 'H';
 
-      const { ship } = fleet[target.value.id];
+      const { ship, start, mode } = fleet[target.value.id];
       ship.hit(target.value.part);
 
       if (ship.isSunk()) {
-        // do one action
-        // mark around water with 'M' maybe
+        // mark around water with 'M'
+        const water = getAroundWater(ship, start.label, mode);
+        markCells(water, 'M');
       } else {
-        // or another
         // wait for another attack
       }
     } else {

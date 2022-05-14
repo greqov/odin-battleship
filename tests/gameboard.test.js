@@ -69,13 +69,13 @@ test('ship takes some space near itself (horizontal case)', () => {
   placeShip(ship, 'a1');
 
   expect(getCell('a1').value.label).toBe('S');
-  expect(getCell('a2').value).toBe(0.5);
+  expect(getCell('a2').value).toBe('w');
   expect(getCell('a3').value).toBe(0);
   expect(getCell('b1').value.label).toBe('S');
-  expect(getCell('b2').value).toBe(0.5);
+  expect(getCell('b2').value).toBe('w');
   expect(getCell('b3').value).toBe(0);
-  expect(getCell('c1').value).toBe(0.5);
-  expect(getCell('c2').value).toBe(0.5);
+  expect(getCell('c1').value).toBe('w');
+  expect(getCell('c2').value).toBe('w');
   expect(getCell('c3').value).toBe(0);
 });
 
@@ -88,12 +88,12 @@ test('ship takes some space near itself (vertical case)', () => {
   expect(getCell('a1').value).toBe(0);
   expect(getCell('a2').value).toBe(0);
   expect(getCell('a3').value).toBe(0);
-  expect(getCell('b1').value).toBe(0.5);
-  expect(getCell('b2').value).toBe(0.5);
-  expect(getCell('b3').value).toBe(0.5);
+  expect(getCell('b1').value).toBe('w');
+  expect(getCell('b2').value).toBe('w');
+  expect(getCell('b3').value).toBe('w');
   expect(getCell('c1').value.label).toBe('S');
   expect(getCell('c2').value.label).toBe('S');
-  expect(getCell('c3').value).toBe(0.5);
+  expect(getCell('c3').value).toBe('w');
 });
 
 test('ships cannot be placed next to each other', () => {
@@ -107,8 +107,6 @@ test('ships cannot be placed next to each other', () => {
     placeShip(ship2, 'c2');
   }).toThrow(/ships cannot be placed next to each other/);
 });
-
-// Gameboards should have a receiveAttack function that takes a pair of coordinates, determines whether or not the attack hit a ship and then sends the ‘hit’ function to the correct ship, or records the coordinates of the missed shot.
 
 test('missed shots marked as M', () => {
   const { receiveAttack, getCellByXY } = gameboardFactory();
@@ -138,4 +136,21 @@ test('gameboard prevents useless shots', () => {
   receiveAttack(0, 0);
 
   expect(() => receiveAttack(0, 0)).toThrow(/useless shot/);
+});
+
+// Gameboards should be able to report whether or not all of their ships have been sunk.
+
+test('mark water around sunk ship with M', () => {
+  const { receiveAttack, placeShip, getCell } = gameboardFactory();
+  const ship = shipFactory(1);
+  placeShip(ship, 'a2');
+
+  receiveAttack(0, 1);
+
+  expect(getCell('a1').value).toBe('M');
+  expect(getCell('a2').value.label).toBe('H');
+  expect(getCell('a3').value).toBe('M');
+  expect(getCell('b1').value).toBe('M');
+  expect(getCell('b2').value).toBe('M');
+  expect(getCell('b3').value).toBe('M');
 });
