@@ -7,9 +7,38 @@ function playerFactory(playerType) {
     turn = !turn;
   };
 
+  const compAttack = (x, y) => {
+    let cell;
+
+    if (x === undefined || y === undefined) {
+      // do random attack
+      const cells = board.board.filter((c) => !['M', 'H'].includes(c.value));
+      const randomCell = cells[Math.floor(Math.random() * cells.length)];
+      board.receiveAttack(randomCell.x, randomCell.y);
+      cell = randomCell;
+    } else {
+      board.receiveAttack(x, y);
+      cell = board.getCellByXY(x, y);
+    }
+
+    return cell;
+  };
+
   const attack = (x, y) => {
     if (!turn) throw new Error('ERROR: wait for your turn!');
-    board.receiveAttack(x, y);
+
+    let cell;
+
+    if (type === 'user') {
+      if (x === undefined || y === undefined) throw new Error('ERROR: incorrect coords!');
+
+      board.receiveAttack(x, y);
+      cell = board.getCellByXY(x, y);
+    } else {
+      cell = compAttack(x, y);
+    }
+
+    return cell;
   };
 
   const setBoard = (gameboard) => {
