@@ -1,3 +1,5 @@
+import gameFn from './game';
 import '../css/styles.css';
 
-console.log('eee boiii!');
+const game = gameFn();
+game.init();
