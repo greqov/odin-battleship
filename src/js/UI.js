@@ -1,6 +1,6 @@
 import layout from './components/layout';
 
-function UI() {
+const UI = (() => {
   const init = () => {
     document.querySelector('html').classList.add('scroll-smooth');
     document.body.classList.add(
@@ -16,9 +16,23 @@ function UI() {
     document.body.insertAdjacentHTML('beforeend', layout);
   };
 
+  const renderPlayerArea = (player) => {
+    console.log(`renderPlayerArea`, renderPlayerArea);
+    const { turn, type } = player;
+    const template = `
+      <div class="text-center">
+        <span class="${turn ? 'visible' : 'invisible'}">👉</span>
+        <span class="text-2xl font-bold">${type.toUpperCase()}</span>
+      </div>
+    `;
+
+    document.querySelector(`[data-area="${type}"]`).insertAdjacentHTML('beforeend', template);
+  };
+
   return {
     init,
+    renderPlayerArea,
   };
-}
+})();
 
 export default UI;
