@@ -1,7 +1,7 @@
 import playerFactory from './player';
 import gameboardFactory from './gameboard';
 
-const game = (function () {
+const game = (() => {
   const players = [];
 
   const addPlayers = () => {
@@ -20,9 +20,11 @@ const game = (function () {
       player.setBoard(gameboardFactory());
     });
 
-    // create/place ships
-    // render all
     // set turn
+    players[1].toggleTurn();
+
+    // create/place ships
+
     // play game
     // get winner
     // show notifications

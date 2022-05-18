@@ -1,4 +1,5 @@
 import layout from './components/layout';
+import boardHTML from './components/board';
 
 const UI = (() => {
   const init = () => {
@@ -17,7 +18,7 @@ const UI = (() => {
   };
 
   const renderPlayerArea = (player) => {
-    console.log(`renderPlayerArea`, renderPlayerArea);
+    console.log(`renderPlayerArea`);
     const { turn, type } = player;
     const template = `
       <div class="text-center">
@@ -29,9 +30,19 @@ const UI = (() => {
     document.querySelector(`[data-area="${type}"]`).insertAdjacentHTML('beforeend', template);
   };
 
+  // TODO: place code inside .renderPlayerArea() ?
+  const renderBoard = (player) => {
+    console.log('render board');
+    const { type } = player;
+    const template = boardHTML(player);
+
+    document.querySelector(`[data-area="${type}"]`).insertAdjacentHTML('beforeend', template);
+  };
+
   return {
     init,
     renderPlayerArea,
+    renderBoard,
   };
 })();
 

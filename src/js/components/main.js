@@ -2,7 +2,7 @@ function main() {
   return `
     <main class="container max-w-4xl mx-auto mb-6 px-4">
       <div class="grid grid-cols-2 gap-4">
-        <div>
+        <div data-area="user" class="outline-dotted outline-1">
           <div class="text-center">
             <span>👉</span>
             <span class="text-2xl font-bold">Player</span>
@@ -48,11 +48,8 @@ function main() {
             <span class="inline-block bg-slate-500 rounded-b-xl h-5 w-5"></span>
           </div>
         </div>
-        <div>
-          <div class="text-center">
-            <span class="invisible">👉</span>
-            <span class="text-2xl font-bold">Computer</span>
-          </div>
+        <div data-area="comp" class="outline-dotted outline-1">
+
         </div>
       </div>
     </main>
