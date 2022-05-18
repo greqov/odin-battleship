@@ -18,3 +18,10 @@ test('game creates boards for each player', () => {
   // NOTE: how to check if boards exist?
   expect(typeof game.players[0].board.placeShip).toBe('function');
 });
+
+test('randomly place fleet on boards', () => {
+  game.init();
+  // NOTE: not sure if this fn has to be inside init()
+  const player = game.players[0];
+  expect(player.board.fleet.length).toBe(10);
+});
