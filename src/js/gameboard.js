@@ -1,6 +1,6 @@
 function gameboardFactory() {
-  const letters = 'abc'.split('');
-  const digits = [1, 2, 3];
+  const letters = 'abcdefghij'.split('');
+  const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const board = [];
   const boardSize = letters.length;
   const fleet = [];
@@ -165,6 +165,12 @@ function gameboardFactory() {
     getCellByXY,
     receiveAttack,
     isFleetDestroyed,
+    get letters() {
+      return letters;
+    },
+    get digits() {
+      return digits;
+    },
   };
 }
 

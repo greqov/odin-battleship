@@ -6,8 +6,14 @@ test('happy test', () => {
 });
 
 test('create square gameboard', () => {
-  const gameboard = gameboardFactory();
-  expect(gameboard.board.length).toBe(9);
+  const { board } = gameboardFactory();
+  expect(Array.isArray(board)).toBe(true);
+});
+
+test('can get board letters and digits', () => {
+  const { letters, digits } = gameboardFactory();
+  expect(letters[2]).toBe('c');
+  expect(digits[1]).toBe(2);
 });
 
 test('can get cell by label', () => {
@@ -53,12 +59,12 @@ test('ships are placed within a gameboard', () => {
 
   // horizontal case
   expect(() => {
-    placeShip(ship, 'b1');
+    placeShip(ship, 'i1');
   }).toThrow(/no enough space/);
 
   // vertical case
   expect(() => {
-    placeShip(ship, 'a2', 'vertical');
+    placeShip(ship, 'a9', 'vertical');
   }).toThrow(/no enough space/);
 });
 
