@@ -158,11 +158,17 @@ function gameboardFactory() {
     return fleet.length === sunkShips;
   };
 
+  const getRandomEmptyCell = () => {
+    const freeCells = board.filter((cell) => cell.value === 0);
+    return freeCells[Math.floor(Math.random() * freeCells.length)];
+  };
+
   return {
     board,
     placeShip,
     getCell,
     getCellByXY,
+    getRandomEmptyCell,
     receiveAttack,
     isFleetDestroyed,
     get letters() {
@@ -170,6 +176,9 @@ function gameboardFactory() {
     },
     get digits() {
       return digits;
+    },
+    get fleet() {
+      return fleet;
     },
   };
 }

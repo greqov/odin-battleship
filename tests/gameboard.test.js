@@ -16,6 +16,11 @@ test('can get board letters and digits', () => {
   expect(digits[1]).toBe(2);
 });
 
+test('board has fleet', () => {
+  const { fleet } = gameboardFactory();
+  expect(Array.isArray(fleet)).toBe(true);
+});
+
 test('can get cell by label', () => {
   const gameboard = gameboardFactory();
   const cell = gameboard.getCell('b3');
@@ -171,4 +176,9 @@ test('detect whether all ships are sunk', () => {
 
   receiveAttack(2, 2);
   expect(isFleetDestroyed()).toBe(true);
+});
+
+test('gameboard can output random free cell', () => {
+  const { getRandomEmptyCell } = gameboardFactory();
+  expect(getRandomEmptyCell().value).toBe(0);
 });
