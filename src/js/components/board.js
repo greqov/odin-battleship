@@ -15,7 +15,13 @@ function boardHTML(player) {
 
   let ct = '';
   cells.forEach((cell) => {
-    ct += `<div class="border border-solid text-sm" data-label="${cell.label}">${cell.value}</div>`;
+    let label;
+    if (typeof cell.value === 'object') {
+      label = cell.value.label;
+    } else {
+      label = cell.value;
+    }
+    ct += `<div class="border border-solid text-sm" data-label="${cell.label}">${label}</div>`;
   });
 
   return `
