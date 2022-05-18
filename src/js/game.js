@@ -21,7 +21,7 @@ const game = (() => {
     });
 
     // set turn
-    players[1].toggleTurn();
+    players[0].toggleTurn();
 
     // create/place ships
 

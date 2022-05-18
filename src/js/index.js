@@ -5,6 +5,7 @@ import '../css/styles.css';
 game.init();
 
 UI.init();
-UI.renderPlayerArea(game.players[1]);
-UI.renderBoard(game.players[1]);
-console.log(game.players[1]);
+game.players.forEach((player) => {
+  UI.renderPlayerArea(player);
+  UI.renderBoard(player);
+});

@@ -39,6 +39,8 @@ const UI = (() => {
     document.querySelector(`[data-area="${type}"]`).insertAdjacentHTML('beforeend', template);
   };
 
+  // TODO: render fleet at the bottom
+
   return {
     init,
     renderPlayerArea,
