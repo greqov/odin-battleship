@@ -14,8 +14,16 @@ function boardHTML(player) {
   });
 
   let cellsHTML = '';
+  const marks = {
+    0: '〰️',
+    S: '🛳️',
+    H: '🔥',
+    M: '❌',
+    w: '〰️',
+  };
   cells.forEach((cell) => {
-    cellsHTML += `<div class="flex items-center justify-center border border-solid text-sm" data-label="${cell.label}">${cell.content.label}</div>`;
+    const { label } = cell.content;
+    cellsHTML += `<div class="flex items-center justify-center border border-solid text-sm" data-label="${cell.label}">${marks[label]}</div>`;
   });
 
   return `
