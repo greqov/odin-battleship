@@ -43,8 +43,8 @@ test('can place ship horizontally on gameboard', () => {
   const ship = shipFactory(2);
   placeShip(ship, 'b1');
 
-  expect(getCell('b1').value.label).toEqual('S');
-  expect(getCell('c1').value.label).toEqual('S');
+  expect(getCell('b1').content.label).toEqual('S');
+  expect(getCell('c1').content.label).toEqual('S');
 });
 
 test('can place ship vertically on gameboard', () => {
@@ -53,8 +53,8 @@ test('can place ship vertically on gameboard', () => {
   const ship = shipFactory(2);
   placeShip(ship, 'b2', 'vertical');
 
-  expect(getCell('b2').value.label).toBe('S');
-  expect(getCell('b3').value.label).toBe('S');
+  expect(getCell('b2').content.label).toBe('S');
+  expect(getCell('b3').content.label).toBe('S');
 });
 
 test('ships are placed within a gameboard', () => {
@@ -79,15 +79,15 @@ test('ship takes some space near itself (horizontal case)', () => {
 
   placeShip(ship, 'a1');
 
-  expect(getCell('a1').value.label).toBe('S');
-  expect(getCell('a2').value).toBe('w');
-  expect(getCell('a3').value).toBe(0);
-  expect(getCell('b1').value.label).toBe('S');
-  expect(getCell('b2').value).toBe('w');
-  expect(getCell('b3').value).toBe(0);
-  expect(getCell('c1').value).toBe('w');
-  expect(getCell('c2').value).toBe('w');
-  expect(getCell('c3').value).toBe(0);
+  expect(getCell('a1').content.label).toBe('S');
+  expect(getCell('a2').content.label).toBe('w');
+  expect(getCell('a3').content.label).toBe(0);
+  expect(getCell('b1').content.label).toBe('S');
+  expect(getCell('b2').content.label).toBe('w');
+  expect(getCell('b3').content.label).toBe(0);
+  expect(getCell('c1').content.label).toBe('w');
+  expect(getCell('c2').content.label).toBe('w');
+  expect(getCell('c3').content.label).toBe(0);
 });
 
 test('ship takes some space near itself (vertical case)', () => {
@@ -96,15 +96,15 @@ test('ship takes some space near itself (vertical case)', () => {
 
   placeShip(ship, 'c1', 'vertical');
 
-  expect(getCell('a1').value).toBe(0);
-  expect(getCell('a2').value).toBe(0);
-  expect(getCell('a3').value).toBe(0);
-  expect(getCell('b1').value).toBe('w');
-  expect(getCell('b2').value).toBe('w');
-  expect(getCell('b3').value).toBe('w');
-  expect(getCell('c1').value.label).toBe('S');
-  expect(getCell('c2').value.label).toBe('S');
-  expect(getCell('c3').value).toBe('w');
+  expect(getCell('a1').content.label).toBe(0);
+  expect(getCell('a2').content.label).toBe(0);
+  expect(getCell('a3').content.label).toBe(0);
+  expect(getCell('b1').content.label).toBe('w');
+  expect(getCell('b2').content.label).toBe('w');
+  expect(getCell('b3').content.label).toBe('w');
+  expect(getCell('c1').content.label).toBe('S');
+  expect(getCell('c2').content.label).toBe('S');
+  expect(getCell('c3').content.label).toBe('w');
 });
 
 test('ships cannot be placed next to each other', () => {
@@ -127,8 +127,8 @@ test('missed shots marked as M', () => {
   receiveAttack(x1, y1);
   receiveAttack(x2, y2);
 
-  expect(getCellByXY(x1, y1).value).toBe('M');
-  expect(getCellByXY(x2, y2).value).toBe('M');
+  expect(getCellByXY(x1, y1).content.label).toBe('M');
+  expect(getCellByXY(x2, y2).content.label).toBe('M');
 });
 
 test('lucky shots marked as H', () => {
@@ -138,8 +138,8 @@ test('lucky shots marked as H', () => {
   receiveAttack(0, 1);
   receiveAttack(1, 1);
 
-  expect(getCell('a2').value.label).toBe('H');
-  expect(getCell('b2').value.label).toBe('H');
+  expect(getCell('a2').content.label).toBe('H');
+  expect(getCell('b2').content.label).toBe('H');
 });
 
 test('gameboard prevents useless shots', () => {
@@ -156,12 +156,12 @@ test('mark water around sunk ship with M', () => {
 
   receiveAttack(0, 1);
 
-  expect(getCell('a1').value).toBe('M');
-  expect(getCell('a2').value.label).toBe('H');
-  expect(getCell('a3').value).toBe('M');
-  expect(getCell('b1').value).toBe('M');
-  expect(getCell('b2').value).toBe('M');
-  expect(getCell('b3').value).toBe('M');
+  expect(getCell('a1').content.label).toBe('M');
+  expect(getCell('a2').content.label).toBe('H');
+  expect(getCell('a3').content.label).toBe('M');
+  expect(getCell('b1').content.label).toBe('M');
+  expect(getCell('b2').content.label).toBe('M');
+  expect(getCell('b3').content.label).toBe('M');
 });
 
 test('detect whether all ships are sunk', () => {
@@ -180,5 +180,5 @@ test('detect whether all ships are sunk', () => {
 
 test('gameboard can output random free cell', () => {
   const { getRandomEmptyCell } = gameboardFactory();
-  expect(getRandomEmptyCell().value).toBe(0);
+  expect(getRandomEmptyCell().content.label).toBe(0);
 });

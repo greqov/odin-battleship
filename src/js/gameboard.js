@@ -11,7 +11,9 @@ function gameboardFactory() {
         label: letter + digit,
         x: letterIndex,
         y: digitIndex,
-        value: 0,
+        content: {
+          label: 0,
+        },
       });
     });
   });
@@ -88,7 +90,7 @@ function gameboardFactory() {
   const markCells = (array, mark) => {
     array.forEach((cell) => {
       const c = cell;
-      c.value = mark;
+      c.content = { label: mark };
     });
   };
 
@@ -102,7 +104,7 @@ function gameboardFactory() {
     }
 
     const water = getAroundWater(ship, place, mode);
-    const shipParts = water.filter((cell) => cell.value.label === 'S').length;
+    const shipParts = water.filter((cell) => cell.content.label === 'S').length;
     if (shipParts) throw new Error('ERROR: ships cannot be placed next to each other');
 
     // place ship/water in case of no errors
@@ -117,7 +119,7 @@ function gameboardFactory() {
     const shipArea = getShipArea(ship, start, mode);
     shipArea.forEach((cell, idx) => {
       const c = cell;
-      c.value = {
+      c.content = {
         id: shipIndex,
         label: 'S',
         part: idx,
@@ -130,15 +132,15 @@ function gameboardFactory() {
   const receiveAttack = (x, y) => {
     const target = getCellByXY(x, y);
 
-    if (target.value === 'M' || target.value.label === 'H')
+    if (['M', 'H'].includes(target.content.label))
       throw new Error('ERROR: useless shot! try another one.');
 
     // check for ship hit
-    if (target.value.label === 'S') {
-      target.value.label = 'H';
+    if (target.content.label === 'S') {
+      target.content.label = 'H';
 
-      const { ship, start, mode } = fleet[target.value.id];
-      ship.hit(target.value.part);
+      const { ship, start, mode } = fleet[target.content.id];
+      ship.hit(target.content.part);
 
       if (ship.isSunk()) {
         // mark around water with 'M'
@@ -148,7 +150,7 @@ function gameboardFactory() {
         // wait for another attack
       }
     } else {
-      target.value = 'M';
+      target.content.label = 'M';
       // change turn
     }
   };
@@ -159,7 +161,7 @@ function gameboardFactory() {
   };
 
   const getRandomEmptyCell = () => {
-    const freeCells = board.filter((cell) => cell.value === 0);
+    const freeCells = board.filter((cell) => cell.content.label === 0);
     return freeCells[Math.floor(Math.random() * freeCells.length)];
   };
 

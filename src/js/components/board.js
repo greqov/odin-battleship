@@ -13,15 +13,9 @@ function boardHTML(player) {
     vertLegend += `<div>${digit}</div>`;
   });
 
-  let ct = '';
+  let cellsHTML = '';
   cells.forEach((cell) => {
-    let label;
-    if (typeof cell.value === 'object') {
-      label = cell.value.label;
-    } else {
-      label = cell.value;
-    }
-    ct += `<div class="border border-solid text-sm" data-label="${cell.label}">${label}</div>`;
+    cellsHTML += `<div class="flex items-center justify-center border border-solid text-sm" data-label="${cell.label}">${cell.content.label}</div>`;
   });
 
   return `
@@ -36,7 +30,7 @@ function boardHTML(player) {
       <div
         class="grid grid-cols-10 grid-rows-10 w-[300px] h-[300px] border border-solid border-gray-400"
       >
-        ${ct}
+        ${cellsHTML}
       </div>
     </div>
   `;

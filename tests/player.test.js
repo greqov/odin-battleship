@@ -52,10 +52,10 @@ describe('player can attack enemy gameboard', () => {
 
   test('player attacks', () => {
     const cell1 = player.attack(1, 0);
-    expect(board.getCellByXY(cell1.x, cell1.y).value).toBe('M');
+    expect(board.getCellByXY(cell1.x, cell1.y).content.label).toBe('M');
 
     const cell2 = player.attack(0, 0);
-    expect(board.getCellByXY(cell2.x, cell2.y).value.label).toBe('H');
+    expect(board.getCellByXY(cell2.x, cell2.y).content.label).toBe('H');
 
     expect(() => player.attack(0, 1)).toThrow(/useless shot/);
   });
@@ -78,17 +78,17 @@ describe('comp can attack enemy gameboard', () => {
 
   test('make random attack (no coords)', () => {
     const cell1 = player.attack();
-    expect(board.getCellByXY(cell1.x, cell1.y).value).toBe('M');
+    expect(board.getCellByXY(cell1.x, cell1.y).content.label).toBe('M');
   });
 
   test('can handle incorrect coords', () => {
     const cell2 = player.attack(3);
-    expect(board.getCellByXY(cell2.x, cell2.y).value).toBe('M');
+    expect(board.getCellByXY(cell2.x, cell2.y).content.label).toBe('M');
   });
 
   test('can hit precisely (has coords)', () => {
     board.placeShip(shipFactory(1), 'a1');
     player.attack(0, 0);
-    expect(board.getCellByXY(0, 0).value.label).toBe('H');
+    expect(board.getCellByXY(0, 0).content.label).toBe('H');
   });
 });
