@@ -1,7 +1,14 @@
+export const marks = {
+  0: '',
+  S: '🛳️',
+  H: '🔥',
+  M: '〰️',
+  w: '',
+};
+
 function boardHTML(player) {
   const { board } = player;
   const { letters, digits, board: cells } = board;
-  console.log(`board`, board);
 
   let horLegend = '';
   letters.forEach((letter) => {
@@ -14,16 +21,18 @@ function boardHTML(player) {
   });
 
   let cellsHTML = '';
-  const marks = {
-    0: '〰️',
-    S: '🛳️',
-    H: '🔥',
-    M: '❌',
-    w: '〰️',
-  };
+
   cells.forEach((cell) => {
     const { label } = cell.content;
-    cellsHTML += `<div class="flex items-center justify-center border border-solid text-sm" data-label="${cell.label}">${marks[label]}</div>`;
+    cellsHTML += `
+      <div
+        class="js-cell flex items-center justify-center border border-solid text-sm cursor-pointer hover:border-orange-500"
+        data-label="${cell.label}"
+        data-x="${cell.x}"
+        data-y="${cell.y}"
+      >
+        ${marks[label]}
+      </div>`;
   });
 
   return `
