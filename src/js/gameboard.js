@@ -131,6 +131,10 @@ function gameboardFactory() {
 
   const receiveAttack = (x, y) => {
     const target = getCellByXY(x, y);
+    const output = {
+      cell: target,
+      water: [],
+    };
 
     if (['M', 'H'].includes(target.content.label))
       throw new Error('ERROR: useless shot! try another one.');
@@ -145,6 +149,7 @@ function gameboardFactory() {
       if (ship.isSunk()) {
         // mark around water with 'M'
         const water = getAroundWater(ship, start.label, mode);
+        output.water = water;
         markCells(water, 'M');
       } else {
         // wait for another attack
@@ -153,6 +158,8 @@ function gameboardFactory() {
       target.content.label = 'M';
       // change turn
     }
+
+    return output;
   };
 
   const isFleetDestroyed = () => {

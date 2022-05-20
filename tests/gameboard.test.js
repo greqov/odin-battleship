@@ -119,6 +119,23 @@ test('ships cannot be placed next to each other', () => {
   }).toThrow(/ships cannot be placed next to each other/);
 });
 
+// NOTE: this test checks too much IMHO
+test('attack function returns affected cells (incl. water around sunk ship)', () => {
+  const { receiveAttack, placeShip } = gameboardFactory();
+
+  const { cell: cell1 } = receiveAttack(0, 0);
+  expect(cell1.label).toBe('a1');
+
+  placeShip(shipFactory(1), 'b1');
+  const { cell: cell2, water: water2 } = receiveAttack(1, 0);
+
+  expect(cell2.label).toBe('b1');
+  expect(water2.length).toBe(5);
+  water2.forEach((cell) => {
+    expect(cell.content.label).toBe('M');
+  });
+});
+
 test('missed shots marked as M', () => {
   const { receiveAttack, getCellByXY } = gameboardFactory();
   const [x1, y1] = [0, 0];
