@@ -26,7 +26,7 @@ function boardHTML(player) {
     const { label } = cell.content;
     cellsHTML += `
       <div
-        class="js-cell flex items-center justify-center border border-solid text-sm cursor-pointer hover:border-orange-500"
+        class="js-cell flex items-center justify-center min-h-[36px] border border-solid text-sm cursor-pointer hover:border-orange-500"
         data-label="${cell.label}"
         data-x="${cell.x}"
         data-y="${cell.y}"
@@ -36,7 +36,7 @@ function boardHTML(player) {
   });
 
   return `
-    <div class="grid grid-cols-[24px_300px] justify-center mt-6">
+    <div class="grid grid-cols-[24px_360px] justify-center mt-6">
       <div class=""></div>
       <div class="grid grid-cols-10 grid-rows-1 text italic">
         ${horLegend}
@@ -45,7 +45,7 @@ function boardHTML(player) {
         ${vertLegend}
       </div>
       <div
-        class="grid grid-cols-10 grid-rows-10 w-[300px] h-[300px] border border-solid border-gray-400"
+        class="grid grid-cols-10 grid-rows-10 w-[360px] h-[360px] border border-solid border-gray-400"
       >
         ${cellsHTML}
       </div>
