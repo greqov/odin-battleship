@@ -66,36 +66,32 @@ const UI = (() => {
 
             // toggle turn on miss
             if (cell.content.label === 'M') {
-              // toggle turn here
-              user.toggleTurn();
-              comp.toggleTurn();
-              // render turn indicator
+              game.toggleTurn();
               renderTurnIndicator();
 
-              let flag = true;
-              while (flag) {
-                const unAtCell = userBoard.getUnattackedCell();
-                console.log(`unAtCell`, unAtCell);
-                const output = userBoard.receiveAttack(unAtCell.x, unAtCell.y);
-                console.log(`output`, output);
+              setTimeout(() => {
+                // TODO: add delay before each comp attack
+                // TODO: add visual notification of comp attack
+                let flag = true;
+                while (flag) {
+                  const unAtCell = userBoard.getUnattackedCell();
+                  const output = userBoard.receiveAttack(unAtCell.x, unAtCell.y);
 
-                // update UI
-                renderCell(user, userBoard, output.cell.label);
-                output.water.forEach((c) => {
-                  renderCell(user, userBoard, c.label);
-                });
+                  // update UI
+                  renderCell(user, userBoard, output.cell.label);
+                  output.water.forEach((c) => {
+                    renderCell(user, userBoard, c.label);
+                  });
 
-                // check for next move
-                if (output.cell.content.label === 'M') {
-                  flag = false;
+                  // check for next move
+                  if (output.cell.content.label === 'M') {
+                    flag = false;
+                  }
                 }
-              }
 
-              // toggle turn here
-              user.toggleTurn();
-              comp.toggleTurn();
-              // render turn indicator
-              renderTurnIndicator();
+                game.toggleTurn();
+                renderTurnIndicator();
+              }, 750);
             }
 
             // mark cells if ship is sunk

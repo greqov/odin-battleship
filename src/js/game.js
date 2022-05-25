@@ -33,6 +33,12 @@ const game = (() => {
     });
   };
 
+  const toggleTurn = () => {
+    const [user, comp] = players;
+    user.toggleTurn();
+    comp.toggleTurn();
+  };
+
   const init = () => {
     console.log('game init');
     // create players
@@ -59,6 +65,7 @@ const game = (() => {
     get players() {
       return players;
     },
+    toggleTurn,
   };
 })();
 
