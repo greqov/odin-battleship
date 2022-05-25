@@ -43,11 +43,11 @@ const game = (() => {
       player.setBoard(gameboardFactory());
     });
 
-    // set turn
-    players[0].toggleTurn();
-
     // create/place ships
     placeFleet();
+
+    // set turn
+    players[0].toggleTurn();
 
     // play game
     // get winner

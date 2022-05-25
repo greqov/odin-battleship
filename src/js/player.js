@@ -8,6 +8,7 @@ function playerFactory(playerType) {
   };
 
   const compAttack = (x, y) => {
+    // TODO: useless fn?
     let cell;
 
     if (x === undefined || y === undefined) {
@@ -24,6 +25,7 @@ function playerFactory(playerType) {
     return cell;
   };
 
+  // TODO: attack fn should know about enemy's(!) board, fix tests
   const attack = (x, y) => {
     if (!turn) throw new Error('ERROR: wait for your turn!');
 

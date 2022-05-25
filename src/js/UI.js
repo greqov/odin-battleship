@@ -9,7 +9,7 @@ const UI = (() => {
     const { turn, type } = player;
     const template = `
       <div class="text-center">
-        <span class="${turn ? 'visible' : 'invisible'}">👉</span>
+        <span class="js-turn-indicator ${turn ? 'visible' : 'invisible'}">👉</span>
         <span class="text-2xl font-bold">${type.toUpperCase()}</span>
       </div>
     `;
@@ -27,17 +27,28 @@ const UI = (() => {
 
   // TODO: render fleet at the bottom
 
+  const renderTurnIndicator = () => {
+    const [user, comp] = game.players;
+    [user, comp].forEach((player) => {
+      const indicator = document.querySelector(`[data-area="${player.type}"] .js-turn-indicator`);
+      indicator.classList.toggle('visible', player.turn);
+      indicator.classList.toggle('invisible', !player.turn);
+    });
+  };
+
   const addHandlers = () => {
-    const user = game.players[0];
-    const compBoard = game.players[1].board;
-    console.log(`compBoard`, compBoard);
+    const [user, comp] = game.players;
+    const userBoard = user.board;
+    const compBoard = comp.board;
 
     const compArea = document.querySelector('[data-area="comp"]');
+    const userArea = document.querySelector('[data-area="user"]');
 
-    const renderCell = (label) => {
-      const cell = compBoard.getCell(label);
+    const renderCell = (player, board, label) => {
+      const cell = board.getCell(label);
       const key = cell.content.label;
-      compArea.querySelector(`[data-label="${cell.label}"]`).textContent = marks[key];
+      const area = player.type === 'comp' ? compArea : userArea;
+      area.querySelector(`[data-label="${cell.label}"]`).textContent = marks[key];
     };
 
     compArea.addEventListener('click', (e) => {
@@ -47,15 +58,44 @@ const UI = (() => {
           const { x, y, label } = e.target.dataset;
           try {
             const { cell, water } = compBoard.receiveAttack(Number(x), Number(y));
-            renderCell(label);
+            renderCell(comp, compBoard, label);
 
             water.forEach((c) => {
-              renderCell(c.label);
+              renderCell(comp, compBoard, c.label);
             });
 
             // toggle turn on miss
             if (cell.content.label === 'M') {
               // toggle turn here
+              user.toggleTurn();
+              comp.toggleTurn();
+              // render turn indicator
+              renderTurnIndicator();
+
+              let flag = true;
+              while (flag) {
+                const unAtCell = userBoard.getUnattackedCell();
+                console.log(`unAtCell`, unAtCell);
+                const output = userBoard.receiveAttack(unAtCell.x, unAtCell.y);
+                console.log(`output`, output);
+
+                // update UI
+                renderCell(user, userBoard, output.cell.label);
+                output.water.forEach((c) => {
+                  renderCell(user, userBoard, c.label);
+                });
+
+                // check for next move
+                if (output.cell.content.label === 'M') {
+                  flag = false;
+                }
+              }
+
+              // toggle turn here
+              user.toggleTurn();
+              comp.toggleTurn();
+              // render turn indicator
+              renderTurnIndicator();
             }
 
             // mark cells if ship is sunk

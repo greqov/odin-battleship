@@ -37,7 +37,7 @@ function boardHTML(player) {
 
   return `
     <div class="grid grid-cols-[24px_360px] justify-center mt-6">
-      <div class=""></div>
+      <div class="">&nbsp;</div>
       <div class="grid grid-cols-10 grid-rows-1 text italic">
         ${horLegend}
       </div>
