@@ -199,3 +199,8 @@ test('gameboard can output random free cell', () => {
   const { getRandomEmptyCell } = gameboardFactory();
   expect(getRandomEmptyCell().content.label).toBe(0);
 });
+
+test('computer attacks hidden cells only', () => {
+  const { getUnattackedCell } = gameboardFactory();
+  expect(getUnattackedCell().visible).toBe(false);
+});

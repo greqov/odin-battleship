@@ -14,6 +14,7 @@ function gameboardFactory() {
         content: {
           label: 0,
         },
+        visible: false,
       });
     });
   });
@@ -87,9 +88,10 @@ function gameboardFactory() {
     return water;
   };
 
-  const markCells = (array, mark) => {
+  const markCells = (array, mark, flag) => {
     array.forEach((cell) => {
       const c = cell;
+      c.visible = flag;
       c.content = { label: mark };
     });
   };
@@ -126,7 +128,7 @@ function gameboardFactory() {
       };
     });
 
-    markCells(water, 'w');
+    markCells(water, 'w', false);
   };
 
   const receiveAttack = (x, y) => {
@@ -150,7 +152,7 @@ function gameboardFactory() {
         // mark around water with 'M'
         const water = getAroundWater(ship, start.label, mode);
         output.water = water;
-        markCells(water, 'M');
+        markCells(water, 'M', true);
       } else {
         // wait for another attack
       }
@@ -159,6 +161,7 @@ function gameboardFactory() {
       // change turn
     }
 
+    target.visible = true;
     return output;
   };
 
@@ -172,12 +175,18 @@ function gameboardFactory() {
     return freeCells[Math.floor(Math.random() * freeCells.length)];
   };
 
+  const getUnattackedCell = () => {
+    const hiddenCells = board.filter((cell) => cell.visible === false);
+    return hiddenCells[Math.floor(Math.random() * hiddenCells.length)];
+  };
+
   return {
     board,
     placeShip,
     getCell,
     getCellByXY,
     getRandomEmptyCell,
+    getUnattackedCell,
     receiveAttack,
     isFleetDestroyed,
     get letters() {
