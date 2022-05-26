@@ -66,6 +66,9 @@ const game = (() => {
     get players() {
       return players;
     },
+    get currentPlayer() {
+      return players.filter((p) => p.turn)[0];
+    },
     toggleTurn,
   };
 })();

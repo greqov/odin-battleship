@@ -38,3 +38,8 @@ test('game toggles turns', () => {
   expect(user.turn).toBe(false);
   expect(comp.turn).toBe(true);
 });
+
+test('game provides info about current player', () => {
+  game.init();
+  expect(game.currentPlayer.type).toBe('user');
+});
