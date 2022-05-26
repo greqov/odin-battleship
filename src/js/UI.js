@@ -36,6 +36,10 @@ const UI = (() => {
     });
   };
 
+  const showResultMessage = () => {
+    console.log(`The winner is ${game.currentPlayer.type}`);
+  };
+
   const addHandlers = () => {
     const [user, comp] = game.players;
     const userBoard = user.board;
@@ -86,12 +90,16 @@ const UI = (() => {
                   // check for next move
                   if (output.cell.content.label === 'M') {
                     flag = false;
+                  } else if (userBoard.isFleetDestroyed()) {
+                    showResultMessage();
                   }
                 }
 
                 game.toggleTurn();
                 renderTurnIndicator();
               }, 750);
+            } else if (compBoard.isFleetDestroyed()) {
+              showResultMessage();
             }
 
             // mark cells if ship is sunk
