@@ -22,6 +22,19 @@ test('game creates boards for each player', () => {
 test('randomly place fleet on boards', () => {
   game.init();
   // NOTE: not sure if this fn has to be inside init()
-  const player = game.players[0];
-  expect(player.board.fleet.length).toBe(10);
+  const user = game.players[0];
+  expect(user.board.fleet.length).toBe(10);
+});
+
+test('game toggles turns', () => {
+  game.init();
+  const [user, comp] = game.players;
+
+  expect(user.turn).toBe(true);
+  expect(comp.turn).toBe(false);
+
+  game.toggleTurn();
+
+  expect(user.turn).toBe(false);
+  expect(comp.turn).toBe(true);
 });

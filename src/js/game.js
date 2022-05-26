@@ -7,6 +7,8 @@ const game = (() => {
   const ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
   const addPlayers = () => {
+    // NOTE: reset players to make consistent tests
+    players.length = 0;
     ['user', 'comp'].forEach((type) => {
       players.push(playerFactory(type));
     });
@@ -40,7 +42,6 @@ const game = (() => {
   };
 
   const init = () => {
-    console.log('game init');
     // create players
     addPlayers();
 
