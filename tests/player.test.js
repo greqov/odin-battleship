@@ -21,6 +21,8 @@ test('player can take/toggle turn', () => {
   expect(player.turn).toBe(false);
   player.toggleTurn();
   expect(player.turn).toBe(true);
+  player.toggleTurn();
+  expect(player.turn).toBe(false);
 });
 
 test('player tracks enemy gameboard', () => {
