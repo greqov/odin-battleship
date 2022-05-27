@@ -1,6 +1,10 @@
 import layout from './components/layout';
 import boardHTML, { marks } from './components/board';
 import game from './game';
+import modalData from './components/modalData';
+import Modal from './Modal';
+
+const modalCtrl = new Modal();
 
 const UI = (() => {
   // NOTE: init game before UI
@@ -38,6 +42,9 @@ const UI = (() => {
 
   const showResultMessage = () => {
     console.log(`The winner is ${game.currentPlayer.type}`);
+    setTimeout(() => {
+      modalCtrl.openModal(document.getElementById(`${modalData.id}`));
+    }, 750);
   };
 
   const delay = (ms) =>
@@ -137,6 +144,7 @@ const UI = (() => {
     );
     document.body.insertAdjacentHTML('beforeend', layout);
 
+    modalCtrl.init();
     addHandlers();
   };
 
