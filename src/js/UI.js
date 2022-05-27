@@ -97,6 +97,8 @@ const UI = (() => {
 
                   // check for next move
                   if (output.cell.content.label === 'M') {
+                    // eslint-disable-next-line no-await-in-loop
+                    await delay(750);
                     flag = false;
                   } else if (userBoard.isFleetDestroyed()) {
                     showResultMessage();
