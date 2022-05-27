@@ -40,6 +40,11 @@ const UI = (() => {
     console.log(`The winner is ${game.currentPlayer.type}`);
   };
 
+  const delay = (ms) =>
+    new Promise((res) => {
+      setTimeout(res, ms);
+    });
+
   const addHandlers = () => {
     const [user, comp] = game.players;
     const userBoard = user.board;
@@ -73,11 +78,14 @@ const UI = (() => {
               game.toggleTurn();
               renderTurnIndicator();
 
-              setTimeout(() => {
-                // TODO: add delay before each comp attack
+              (async () => {
                 // TODO: add visual notification of comp attack
                 let flag = true;
                 while (flag) {
+                  // TODO: fix ESLint warning
+                  // eslint-disable-next-line no-await-in-loop
+                  await delay(750);
+
                   const unAtCell = userBoard.getUnattackedCell();
                   const output = userBoard.receiveAttack(unAtCell.x, unAtCell.y);
 
@@ -97,7 +105,7 @@ const UI = (() => {
 
                 game.toggleTurn();
                 renderTurnIndicator();
-              }, 750);
+              })();
             } else if (compBoard.isFleetDestroyed()) {
               showResultMessage();
             }
