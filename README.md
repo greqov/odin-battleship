@@ -7,14 +7,21 @@ _Battleship game for The Odin Project_
 
 ## Features
 
-- ...
+- your opponent is a (not) very smart AI;
+- quick start with randomly placed ships;
+- clean UI;
+- unit tests!
+
+## Questions
+
+- For unknown reason I don't utilize player's `attack` function, only use `receiveAttack` on gameboard. `attack` function doesn't know about enemy's board. Hmmm...
 
 ## TODOs
 
-- [ ] add end game modal
-- [ ] add buttons to start/reset game
-- [ ] cleanup code, fix todos
-- [ ] update README (+ add missing features)
+- [ ] add option to place ships manually;
+- [ ] make AI smarter;
+- [ ] add visual notification of computer's attack;
+- [ ] display fleet under gameboard to track progress.
 
 ## Development
 
