@@ -51,7 +51,6 @@ const game = (() => {
     state = true;
     players = [];
 
-    // create players
     addPlayers();
 
     // create boards
@@ -59,15 +58,10 @@ const game = (() => {
       player.setBoard(gameboardFactory());
     });
 
-    // create/place ships
     placeFleet();
 
     // set turn
     players[0].toggleTurn();
-
-    // play game
-    // get winner
-    // show notifications
   };
 
   const restart = () => {

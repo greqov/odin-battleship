@@ -26,7 +26,6 @@ class Modal {
   }
 
   openModal(modal) {
-    console.log(`modal =>`, modal);
     document.body.classList.add('overflow-hidden', 'body-padding-fix');
     document.body.classList.remove('overflow-y-scroll');
     modal.classList.remove('hidden');

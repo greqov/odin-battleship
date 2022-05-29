@@ -153,12 +153,9 @@ function gameboardFactory() {
         const water = getAroundWater(ship, start.label, mode);
         output.water = water;
         markCells(water, 'M', true);
-      } else {
-        // wait for another attack
       }
     } else {
       target.content.label = 'M';
-      // change turn
     }
 
     target.visible = true;

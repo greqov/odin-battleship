@@ -23,8 +23,6 @@ const UI = (() => {
     document.querySelector(`[data-area="${type}"]`).insertAdjacentHTML('beforeend', template);
   };
 
-  // TODO: render fleet at the bottom
-
   const renderTurnIndicator = () => {
     const [user, comp] = game.players;
     [user, comp].forEach((player) => {
@@ -91,7 +89,6 @@ const UI = (() => {
               renderTurnIndicator();
 
               (async function computerAttacks() {
-                // TODO: add visual notification of comp attack
                 let flag = true;
                 while (flag) {
                   // TODO: fix ESLint warning
@@ -127,8 +124,6 @@ const UI = (() => {
               showWinningMessage();
               return;
             }
-
-            // mark cells if ship is sunk
           } catch (error) {
             console.log(error);
           }
