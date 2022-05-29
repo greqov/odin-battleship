@@ -11,21 +11,15 @@ const UI = (() => {
 
   const renderPlayerArea = (player) => {
     const { turn, type } = player;
-    const template = `
+    let template = `
       <div class="text-center">
         <span class="js-turn-indicator ${turn ? 'visible' : 'invisible'}">👉</span>
         <span class="text-2xl font-bold">${type.toUpperCase()}</span>
       </div>
     `;
+    template += boardHTML(player);
 
-    document.querySelector(`[data-area="${type}"]`).insertAdjacentHTML('beforeend', template);
-  };
-
-  // TODO: place code inside .renderPlayerArea() ?
-  const renderBoard = (player) => {
-    const { type } = player;
-    const template = boardHTML(player);
-
+    document.querySelector(`[data-area="${type}"]`).innerHTML = '';
     document.querySelector(`[data-area="${type}"]`).insertAdjacentHTML('beforeend', template);
   };
 
@@ -37,6 +31,12 @@ const UI = (() => {
       const indicator = document.querySelector(`[data-area="${player.type}"] .js-turn-indicator`);
       indicator.classList.toggle('visible', player.turn);
       indicator.classList.toggle('invisible', !player.turn);
+    });
+  };
+
+  const renderGameContent = () => {
+    game.players.forEach((player) => {
+      renderPlayerArea(player);
     });
   };
 
@@ -55,10 +55,6 @@ const UI = (() => {
     });
 
   const addHandlers = () => {
-    const [user, comp] = game.players;
-    const userBoard = user.board;
-    const compBoard = comp.board;
-
     const compArea = document.querySelector('[data-area="comp"]');
     const userArea = document.querySelector('[data-area="user"]');
 
@@ -73,7 +69,12 @@ const UI = (() => {
       if (!game.isActive()) return;
 
       if (e.target.closest('.js-cell')) {
-        // check turn;
+        // NOTE: place user/comp vars here to get actual data after restart game
+        // TODO: get actual players data in more elegant way
+        const [user, comp] = game.players;
+        const userBoard = user.board;
+        const compBoard = comp.board;
+
         if (user.turn) {
           const { x, y, label } = e.target.dataset;
           try {
@@ -84,12 +85,12 @@ const UI = (() => {
               renderCell(comp, compBoard, c.label);
             });
 
-            // toggle turn on miss
+            // toggle to computer attacks on missed hit
             if (cell.content.label === 'M') {
               game.toggleTurn();
               renderTurnIndicator();
 
-              (async () => {
+              (async function computerAttacks() {
                 // TODO: add visual notification of comp attack
                 let flag = true;
                 while (flag) {
@@ -114,6 +115,7 @@ const UI = (() => {
                   } else if (userBoard.isFleetDestroyed()) {
                     game.toggleActiveState();
                     showWinningMessage();
+                    return;
                   }
                 }
 
@@ -123,6 +125,7 @@ const UI = (() => {
             } else if (compBoard.isFleetDestroyed()) {
               game.toggleActiveState();
               showWinningMessage();
+              return;
             }
 
             // mark cells if ship is sunk
@@ -133,6 +136,12 @@ const UI = (() => {
           console.log('Wait for your turn');
         }
       }
+    });
+
+    const newGameBtn = document.querySelector('.js-new-game-btn');
+    newGameBtn.addEventListener('click', () => {
+      game.restart();
+      renderGameContent();
     });
   };
 
@@ -150,6 +159,8 @@ const UI = (() => {
     );
     document.body.insertAdjacentHTML('beforeend', layout);
 
+    renderGameContent();
+
     modalCtrl.init();
     addHandlers();
   };
@@ -157,7 +168,6 @@ const UI = (() => {
   return {
     init,
     renderPlayerArea,
-    renderBoard,
   };
 })();
 
