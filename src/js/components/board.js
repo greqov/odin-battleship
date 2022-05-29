@@ -32,7 +32,7 @@ function boardHTML(player) {
         data-x="${cell.x}"
         data-y="${cell.y}"
       >
-        ${marks[label]}
+        ${type === 'comp' ? '' : marks[label]}
       </div>`;
   });
 
