@@ -70,6 +70,8 @@ const UI = (() => {
     };
 
     compArea.addEventListener('click', (e) => {
+      if (!game.isActive()) return;
+
       if (e.target.closest('.js-cell')) {
         // check turn;
         if (user.turn) {
@@ -110,6 +112,7 @@ const UI = (() => {
                     await delay(750);
                     flag = false;
                   } else if (userBoard.isFleetDestroyed()) {
+                    game.toggleActiveState();
                     showWinningMessage();
                   }
                 }
@@ -118,6 +121,7 @@ const UI = (() => {
                 renderTurnIndicator();
               })();
             } else if (compBoard.isFleetDestroyed()) {
+              game.toggleActiveState();
               showWinningMessage();
             }
 

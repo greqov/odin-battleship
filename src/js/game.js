@@ -3,6 +3,7 @@ import shipFactory from './ship';
 import gameboardFactory from './gameboard';
 
 const game = (() => {
+  let state = true;
   const players = [];
   const ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
@@ -41,6 +42,12 @@ const game = (() => {
     comp.toggleTurn();
   };
 
+  const isActive = () => state;
+
+  const toggleActiveState = () => {
+    state = !state;
+  };
+
   const init = () => {
     // create players
     addPlayers();
@@ -63,6 +70,8 @@ const game = (() => {
 
   return {
     init,
+    isActive,
+    toggleActiveState,
     get players() {
       return players;
     },

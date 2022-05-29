@@ -43,3 +43,11 @@ test('game provides info about current player', () => {
   game.init();
   expect(game.currentPlayer.type).toBe('user');
 });
+
+test('game has active/inactive states', () => {
+  game.init();
+  expect(game.isActive()).toBe(true);
+
+  game.toggleActiveState();
+  expect(game.isActive()).toBe(false);
+});
