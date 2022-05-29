@@ -1,3 +1,6 @@
+import UI from './UI';
+import game from './game';
 import '../css/styles.css';
 
-console.log('eee boiii!');
+game.init();
+UI.init();

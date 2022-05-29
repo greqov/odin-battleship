@@ -1,6 +1,6 @@
 function gameboardFactory() {
-  const letters = 'abc'.split('');
-  const digits = [1, 2, 3];
+  const letters = 'abcdefghij'.split('');
+  const digits = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   const board = [];
   const boardSize = letters.length;
   const fleet = [];
@@ -11,7 +11,10 @@ function gameboardFactory() {
         label: letter + digit,
         x: letterIndex,
         y: digitIndex,
-        value: 0,
+        content: {
+          label: 0,
+        },
+        visible: false,
       });
     });
   });
@@ -85,10 +88,11 @@ function gameboardFactory() {
     return water;
   };
 
-  const markCells = (array, mark) => {
+  const markCells = (array, mark, flag) => {
     array.forEach((cell) => {
       const c = cell;
-      c.value = mark;
+      c.visible = flag;
+      c.content = { label: mark };
     });
   };
 
@@ -102,7 +106,7 @@ function gameboardFactory() {
     }
 
     const water = getAroundWater(ship, place, mode);
-    const shipParts = water.filter((cell) => cell.value.label === 'S').length;
+    const shipParts = water.filter((cell) => cell.content.label === 'S').length;
     if (shipParts) throw new Error('ERROR: ships cannot be placed next to each other');
 
     // place ship/water in case of no errors
@@ -117,40 +121,45 @@ function gameboardFactory() {
     const shipArea = getShipArea(ship, start, mode);
     shipArea.forEach((cell, idx) => {
       const c = cell;
-      c.value = {
+      c.content = {
         id: shipIndex,
         label: 'S',
         part: idx,
       };
     });
 
-    markCells(water, 'w');
+    markCells(water, 'w', false);
   };
 
   const receiveAttack = (x, y) => {
     const target = getCellByXY(x, y);
+    const output = {
+      cell: target,
+      water: [],
+    };
 
-    if (target.value === 'M' || target.value.label === 'H')
+    if (['M', 'H'].includes(target.content.label))
       throw new Error('ERROR: useless shot! try another one.');
 
     // check for ship hit
-    if (target.value.label === 'S') {
-      target.value.label = 'H';
+    if (target.content.label === 'S') {
+      target.content.label = 'H';
 
-      const { ship, start, mode } = fleet[target.value.id];
-      ship.hit(target.value.part);
+      const { ship, start, mode } = fleet[target.content.id];
+      ship.hit(target.content.part);
 
       if (ship.isSunk()) {
         // mark around water with 'M'
         const water = getAroundWater(ship, start.label, mode);
-        markCells(water, 'M');
-      } else {
-        // wait for another attack
+        output.water = water;
+        markCells(water, 'M', true);
       }
     } else {
-      target.value = 'M';
-      // change turn
+      target.content.label = 'M';
     }
+
+    target.visible = true;
+    return output;
   };
 
   const isFleetDestroyed = () => {
@@ -158,13 +167,34 @@ function gameboardFactory() {
     return fleet.length === sunkShips;
   };
 
+  const getRandomEmptyCell = () => {
+    const freeCells = board.filter((cell) => cell.content.label === 0);
+    return freeCells[Math.floor(Math.random() * freeCells.length)];
+  };
+
+  const getUnattackedCell = () => {
+    const hiddenCells = board.filter((cell) => cell.visible === false);
+    return hiddenCells[Math.floor(Math.random() * hiddenCells.length)];
+  };
+
   return {
     board,
     placeShip,
     getCell,
     getCellByXY,
+    getRandomEmptyCell,
+    getUnattackedCell,
     receiveAttack,
     isFleetDestroyed,
+    get letters() {
+      return letters;
+    },
+    get digits() {
+      return digits;
+    },
+    get fleet() {
+      return fleet;
+    },
   };
 }
 
