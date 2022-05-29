@@ -1,4 +1,4 @@
-export default function modal({ id, title, body, actions }) {
+export default function modal({ id, title, body }) {
   return `
     <div id="${id}" class="js-modal hidden _flex fixed top-0 left-0 h-screen w-screen justify-center items-center p-4 bg-black/75 overflow-auto">
       <div class="w-[480px] max-w-full bg-white rounded-lg shadow-lg">
@@ -14,11 +14,8 @@ export default function modal({ id, title, body, actions }) {
             </svg>
           </button>
         </div>
-        <div class="overflow-auto p-4 border-t border-slate-200" style="max-height: calc(100vh - 182px);">
+        <div class="overflow-auto p-4 pb-16 _border-t border-slate-200" style="max-height: calc(100vh - 182px);">
           ${body}
-        </div>
-        <div class="flex justify-end space-x-2 p-4 border-t border-slate-200">
-          ${actions}
         </div>
       </div>
     </div>

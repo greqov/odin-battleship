@@ -40,8 +40,10 @@ const UI = (() => {
     });
   };
 
-  const showResultMessage = () => {
-    console.log(`The winner is ${game.currentPlayer.type}`);
+  const showWinningMessage = () => {
+    const winningTextEl = document.querySelector('.js-winning-text');
+    const text = `${game.currentPlayer.type === 'comp' ? 'Computer' : 'User'} wins!`;
+    winningTextEl.textContent = text;
     setTimeout(() => {
       modalCtrl.openModal(document.getElementById(`${modalData.id}`));
     }, 750);
@@ -108,7 +110,7 @@ const UI = (() => {
                     await delay(750);
                     flag = false;
                   } else if (userBoard.isFleetDestroyed()) {
-                    showResultMessage();
+                    showWinningMessage();
                   }
                 }
 
@@ -116,7 +118,7 @@ const UI = (() => {
                 renderTurnIndicator();
               })();
             } else if (compBoard.isFleetDestroyed()) {
-              showResultMessage();
+              showWinningMessage();
             }
 
             // mark cells if ship is sunk

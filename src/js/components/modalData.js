@@ -1,6 +1,5 @@
 const id = 'modal-endgame';
-const title = 'Game over!';
-const body = '<h2>Such modal!</h2>';
-const actions = `<button>Close</button>`;
+const title = '&nbsp;';
+const body = '<h2 class="text-2xl text-center">🎉 <span class="js-winning-text"></span> 🎉</h2>';
 
-export default { id, title, body, actions };
+export default { id, title, body };
