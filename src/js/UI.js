@@ -12,8 +12,8 @@ const UI = (() => {
   const renderPlayerArea = (player) => {
     const { turn, type } = player;
     let template = `
-      <div class="text-center">
-        <span class="js-turn-indicator ${turn ? 'visible' : 'invisible'}">👉</span>
+      <div class="flex items-center justify-center">
+        <span class="js-turn-indicator ${turn ? 'visible' : 'invisible'} pr-1">👉</span>
         <span class="text-2xl font-bold">${type.toUpperCase()}</span>
       </div>
     `;
