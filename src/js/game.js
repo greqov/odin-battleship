@@ -4,12 +4,10 @@ import gameboardFactory from './gameboard';
 
 const game = (() => {
   let state = true;
-  const players = [];
+  let players = [];
   const ships = [4, 3, 3, 2, 2, 2, 1, 1, 1, 1];
 
   const addPlayers = () => {
-    // NOTE: reset players to make consistent tests
-    players.length = 0;
     ['user', 'comp'].forEach((type) => {
       players.push(playerFactory(type));
     });
@@ -49,6 +47,10 @@ const game = (() => {
   };
 
   const init = () => {
+    // NOTE: reset state before new game
+    state = true;
+    players = [];
+
     // create players
     addPlayers();
 
@@ -68,8 +70,13 @@ const game = (() => {
     // show notifications
   };
 
+  const restart = () => {
+    init();
+  };
+
   return {
     init,
+    restart,
     isActive,
     toggleActiveState,
     get players() {

@@ -51,3 +51,13 @@ test('game has active/inactive states', () => {
   game.toggleActiveState();
   expect(game.isActive()).toBe(false);
 });
+
+test('game can be restarted', () => {
+  game.init();
+
+  game.toggleActiveState();
+  expect(game.isActive()).toBe(false);
+
+  game.restart();
+  expect(game.isActive()).toBe(true);
+});
